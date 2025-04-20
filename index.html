@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aksa Étoile - Luxurious Footwear</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                'brand-gold': '#b48c34',
+                'brand-dark': '#1a1a1a',
+                'brand-light': '#f8f5f0',
+              },
+              fontFamily: {
+                'serif': ['Playfair Display', 'serif'],
+                'sans': ['Lato', 'sans-serif'],
+              },
+              transitionTimingFunction: {
+                'lux-ease': 'cubic-bezier(0.77, 0, 0.175, 1)',
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="bg-brand-light font-sans text-brand-dark antialiased">
+    <header class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300 ease-in-out">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center space-x-2">
+                <img src="https://i.ibb.co/MyQZFF6t/Logo.png" alt="Aksa Étoile Logo" class="h-12 md:h-16 w-auto">
+            </a>
+            <div class="hidden md:flex space-x-8 font-medium tracking-wider uppercase text-sm">
+                <a href="#" class="text-gray-700 hover:text-brand-gold transition duration-300 ease-lux-ease">Home</a>
+                <a href="#shop" class="text-gray-700 hover:text-brand-gold transition duration-300 ease-lux-ease">Shop</a>
+                <a href="#" class="text-gray-700 hover:text-brand-gold transition duration-300 ease-lux-ease">Collections</a>
+                <a href="#" class="text-gray-700 hover:text-brand-gold transition duration-300 ease-lux-ease">About Us</a>
+                <a href="#" class="text-gray-700 hover:text-brand-gold transition duration-300 ease-lux-ease">Contact</a>
+            </div>
+            <div class="flex items-center space-x-5">
+                <button class="text-gray-600 hover:text-brand-gold transition duration-300 ease-lux-ease">
+                    <i class="fas fa-search fa-fw"></i>
+                </button>
+                <button class="text-gray-600 hover:text-brand-gold transition duration-300 ease-lux-ease">
+                    <i class="fas fa-user fa-fw"></i>
+                </button>
+                <button id="cart-button" class="relative text-gray-600 hover:text-brand-gold transition duration-300 ease-lux-ease">
+                    <i class="fas fa-shopping-bag fa-fw"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-brand-gold text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">0</span>
+                </button>
+                <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-brand-gold transition duration-300 ease-lux-ease">
+                    <i class="fas fa-bars fa-fw text-xl"></i>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white absolute top-full left-0 w-full shadow-lg py-4">
+            <a href="#" class="block px-6 py-3 text-gray-700 hover:bg-brand-light hover:text-brand-gold transition duration-300 ease-lux-ease">Home</a>
+            <a href="#shop" class="block px-6 py-3 text-gray-700 hover:bg-brand-light hover:text-brand-gold transition duration-300 ease-lux-ease">Shop</a>
+            <a href="#" class="block px-6 py-3 text-gray-700 hover:bg-brand-light hover:text-brand-gold transition duration-300 ease-lux-ease">Collections</a>
+            <a href="#" class="block px-6 py-3 text-gray-700 hover:bg-brand-light hover:text-brand-gold transition duration-300 ease-lux-ease">About Us</a>
+            <a href="#" class="block px-6 py-3 text-gray-700 hover:bg-brand-light hover:text-brand-gold transition duration-300 ease-lux-ease">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="relative h-[70vh] md:h-[90vh] bg-cover bg-center text-white flex items-center" style="background-image: url('https://i.ibb.co/dwwysD89/Background.jpg');">
+            <div class="absolute inset-0 bg-black opacity-40"></div>
+            <div class="container mx-auto px-6 relative z-10 text-center">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif font-bold mb-4 leading-tight">Elegance in Every Step</h1>
+                <p class="text-lg md:text-xl font-light mb-8 max-w-2xl mx-auto">Discover Aksa Étoile's exquisite heels, crafted for the modern icon.</p>
+                <a href="#shop" class="bg-brand-gold hover:bg-opacity-80 text-white font-semibold py-3 px-8 uppercase tracking-wider text-sm transition duration-300 ease-lux-ease shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                    Shop Now
+                </a>
+            </div>
+        </section>
+
+        <section id="shop" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-serif font-semibold text-center mb-12 text-brand-dark">Featured Heels</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+                    <div class="group bg-brand-light p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 ease-lux-ease overflow-hidden">
+                        <div class="relative mb-5 overflow-hidden">
+                            <img src="https://i.ibb.co/cS13JfL0/Product-1.jpg" alt="Aurora Stiletto" class="w-full h-80 object-cover transform group-hover:scale-105 transition-transform duration-500 ease-lux-ease">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300 ease-lux-ease flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                <button class="text-white bg-brand-gold bg-opacity-80 hover:bg-opacity-100 py-2 px-5 uppercase text-xs tracking-wider transition duration-300 ease-lux-ease">Quick View</button>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-serif font-medium text-brand-dark mb-1">Aurora Stiletto</h3>
+                        <p class="text-brand-gold font-semibold">$795.00</p>
+                        <button class="mt-3 w-full bg-brand-gold text-white py-2 uppercase text-xs tracking-wider hover:bg-opacity-80 transition duration-300 ease-lux-ease add-to-cart" data-product="Aurora Stiletto">Add to Cart</button>
+                    </div>
+                    <div class="group bg-brand-light p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 ease-lux-ease overflow-hidden">
+                        <div class="relative mb-5 overflow-hidden">
+                            <img src="https://i.ibb.co/HTVg01pP/Product-2.jpg" alt="Lunette Pump" class="w-full h-80 object-cover transform group-hover:scale-105 transition-transform duration-500 ease-lux-ease">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300 ease-lux-ease flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                <button class="text-white bg-brand-gold bg-opacity-80 hover:bg-opacity-100 py-2 px-5 uppercase text-xs tracking-wider transition duration-300 ease-lux-ease">Quick View</button>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-serif font-medium text-brand-dark mb-1">Lunette Pump</h3>
+                        <p class="text-brand-gold font-semibold">$925.00</p>
+                        <button class="mt-3 w-full bg-brand-gold text-white py-2 uppercase text-xs tracking-wider hover:bg-opacity-80 transition duration-300 ease-lux-ease add-to-cart" data-product="Lunette Pump">Add to Cart</button>
+                    </div>
+                    <div class="group bg-brand-light p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 ease-lux-ease overflow-hidden">
+                        <div class="relative mb-5 overflow-hidden">
+                            <img src="https://i.ibb.co/0RcCrH4M/Product-3.jpg" alt="Celeste Heel" class="w-full h-80 object-cover transform group-hover:scale-105 transition-transform duration-500 ease-lux-ease">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300 ease-lux-ease flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                <button class="text-white bg-brand-gold bg-opacity-80 hover:bg-opacity-100 py-2 px-5 uppercase text-xs tracking-wider transition duration-300 ease-lux-ease">Quick View</button>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-serif font-medium text-brand-dark mb-1">Celeste Heel</h3>
+                        <p class="text-brand-gold font-semibold">$675.00</p>
+                        <button class="mt-3 w-full bg-brand-gold text-white py-2 uppercase text-xs tracking-wider hover:bg-opacity-80 transition duration-300 ease-lux-ease add-to-cart" data-product="Celeste Heel">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="text-center mt-12">
+                    <a href="#" class="border border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-white font-semibold py-3 px-8 uppercase tracking-wider text-sm transition duration-300 ease-lux-ease">
+                        View All Products
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 md:py-24 bg-brand-light">
+            <div class="container mx-auto px-6 grid md:grid-cols-3 gap-12 text-center">
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-gem fa-2x text-brand-gold mb-4"></i>
+                    <h3 class="text-xl font-serif font-semibold mb-2">Unmatched Quality</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Handcrafted with the finest materials for lasting elegance.</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-shoe-prints fa-2x text-brand-gold mb-4 transform -scale-x-100"></i>
+                    <h3 class="text-xl font-serif font-semibold mb-2">Timeless Style</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Designs that elevate any occasion, season after season.</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <i class="fas fa-hand-holding-heart fa-2x text-brand-gold mb-4"></i>
+                    <h3 class="text-xl font-serif font-semibold mb-2">Supreme Comfort</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Beauty meets comfort in every step you take.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-brand-dark text-brand-light">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-2xl md:text-3xl font-serif font-medium mb-4">Join Our Exclusive Circle</h2>
+                <p class="mb-8 font-light max-w-lg mx-auto">Subscribe for updates on new collections and special offers.</p>
+                <form class="flex flex-col sm:flex-row justify-center max-w-md mx-auto">
+                    <input type="email" placeholder="Enter your email address" class="flex-grow px-4 py-3 mb-3 sm:mb-0 sm:mr-3 text-brand-dark bg-white border border-transparent focus:outline-none focus:ring-2 focus:ring-brand-gold focus:border-transparent placeholder-gray-500" required>
+                    <button type="風submit" class="bg-brand-gold hover:bg-opacity-80 text-white font-semibold py-3 px-8 uppercase tracking-wider text-sm transition duration-300 ease-lux-ease shadow hover:shadow-md">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-100 text-gray-600 py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <img src="https://i.ibb.co/MyQZFF6t/Logo.png" alt="Aksa Étoile Logo" class="h-14 mb-4 opacity-80">
+                    <p class="text-sm">Aksa Étoile: Exquisite heels for the modern sophisticate.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 uppercase tracking-wider text-sm text-brand-dark">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-brand-gold transition duration-300">Shop</a></li>
+                        <li><a href="#" class="hover:text-brand-gold transition duration-300">About Us</a></li>
+                        <li><a href="#" class="hover:text-brand-gold transition duration-300">Contact</a></li>
+                        <li><a href="#" class="hover:text-brand-gold transition duration-300">FAQs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 uppercase tracking-wider text-sm text-brand-dark">Customer Service</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-brand-gold transition duration-300">Shipping & Returns</a></li>
+                        <li><a href="#" class="hover:text-brand-gold transition duration-300">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-gold transition duration-300">Terms & Conditions</a></li>
+                        <li><a href="#" class="hover:text-brand-gold transition duration-300">Track Order</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 uppercase tracking-wider text-sm text-brand-dark">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" aria-label="Facebook" class="text-gray-500 hover:text-brand-gold transition duration-300"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" aria-label="Instagram" class="text-gray-500 hover:text-brand-gold transition duration-300"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" aria-label="Pinterest" class="text-gray-500 hover:text-brand-gold transition duration-300"><i class="fab fa-pinterest-p fa-lg"></i></a>
+                        <a href="#" aria-label="Twitter" class="text-gray-500 hover:text-brand-gold transition duration-300"><i class="fab fa-twitter fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-300 pt-8 text-center text-sm">
+                <p>© <span id="current-year"></span> Aksa Étoile. All Rights Reserved. Designed with <i class="fas fa-heart text-brand-gold"></i>.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Cart functionality
+        let cartCount = 0;
+        const cartCountElement = document.getElementById('cart-count');
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                cartCount++;
+                cartCountElement.textContent = cartCount;
+                alert(`${button.dataset.product} added to cart!`);
+            });
+        });
+    </script>
+</body>
+</html>
