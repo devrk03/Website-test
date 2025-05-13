@@ -479,3 +479,54 @@ class MoveValidator {
                     }
                     // Stop at any piece
                     break;
+                    }
+                
+                attackRow += dir.dr;
+                attackCol += dir.dc;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Check if a square is attacked by a bishop or queen
+     * @param {Array} board - The chess board
+     * @param {number} row - The row index
+     * @param {number} col - The column index
+     * @param {string} color - The color of the piece on the square
+     * @returns {boolean} - Whether the square is attacked by a bishop or queen
+     */
+    static isAttackedByBishopOrQueen(board, row, col, color) {
+        const opponentColor = color === 'white' ? 'black' : 'white';
+        const directions = [
+            { dr: -1, dc: -1 }, // Up-left
+            { dr: -1, dc: 1 },  // Up-right
+            { dr: 1, dc: -1 },  // Down-left
+            { dr: 1, dc: 1 }    // Down-right
+        ];
+        
+        for (const dir of directions) {
+            let attackRow = row + dir.dr;
+            let attackCol = col + dir.dc;
+            
+            while (attackRow >= 0 && attackRow < 8 && attackCol >= 0 && attackCol < 8) {
+                const piece = board[attackRow][attackCol];
+                
+                if (piece) {
+                    if (piece.color === opponentColor && 
+                        (piece.type === 'bishop' || piece.type === 'queen')) {
+                        return true;
+                    }
+                    // Stop at any piece
+                    break;
+                }
+                
+                attackRow += dir.dr;
+                attackCol += dir.dc;
+            }
+        }
+        
+        return false;
+    }
+}
