@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizon Interactive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;400;700&family=Raleway:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-cream: #FFFBDE;
+            --color-teal-light: #90D1CA;
+            --color-teal: #129990;
+            --color-teal-dark: #096B68;
+            --font-title: 'Orbitron', sans-serif;
+            --font-text: 'Montserrat', sans-serif;
+            --font-alt: 'Raleway', sans-serif;
+        }
+
+        html, body {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            background-color: var(--color-cream);
+            color: var(--color-teal-dark);
+            font-family: var(--font-text);
+        }
+
+        body {
+            position: relative;
+        }
+
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-teal-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .preloader-logo {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 4px;
+            background-color: rgba(255, 251, 222, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0;
+            background-color: var(--color-teal-light);
+            transition: width 0.3s ease-in-out;
+        }
+
+        .loading-text {
+            margin-top: 10px;
+            color: var(--color-cream);
+            font-family: var(--font-title);
+            letter-spacing: 2px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Navigation */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 40px;
+            transition: all 0.4s ease;
+        }
+
+        .nav-scrolled {
+            padding: 15px 40px;
+            background: rgba(255, 251, 222, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(9, 107, 104, 0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            height: 50px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-link {
+            margin-left: 40px;
+            position: relative;
+        }
+
+        .nav-link a {
+            color: var(--color-cream);
+            text-decoration: none;
+            font-family: var(--font-title);
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link a:hover {
+            color: var(--color-teal-light);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-teal-light);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .hero-content {
+            padding: 0 10%;
+            max-width: 600px;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeInUp 1s ease forwards 0.5s;
+        }
+
+        .hero-title {
+            font-family: var(--font-title);
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--color-cream);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-text {
+            font-family: var(--font-text);
+            font-size: 1.2rem;
+            color: var(--color-cream);
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: bounce 2s infinite;
+            z-index: 2;
+        }
+
+        .scroll-text {
+            color: var(--color-cream);
+            font-family: var(--font-alt);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .scroll-arrow {
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--color-cream);
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .scroll-arrow::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid var(--color-cream);
+            border-bottom: 2px solid var(--color-cream);
+            transform: rotate(45deg) translateY(-2px);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-20px) translateX(-50%); }
+            60% { transform: translateY(-10px) translateX(-50%); }
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Video Animation Section */
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 200vh; /* Taller to allow for scrolling through the animation */
+            overflow: hidden;
+        }
+
+        .sticky-video {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .video-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.1s ease;
+        }
+
+        .active-frame {
+            opacity: 1;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(9, 107, 104, 0) 0%, rgba(9, 107, 104, 0.2) 50%, rgba(9, 107, 104, 0.8) 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 1;
+        }
+
+        .video-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10% 10%;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.7s ease;
+            z-index: 2;
+        }
+
+        .video-title {
+            font-family: var(--font-title);
+            font-size: 3.5rem;
+            color: var(--color-cream);
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .video-description {
+            font-family: var(--font-alt);
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: var(--color-cream);
+            max-width: 600px;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            padding: 100px 10%;
+            background: linear-gradient(135deg, var(--color-cream) 0%, var(--color-teal-light) 100%);
+            position: relative;
+            z-index: 3;
+        }
+
+        .gallery-title {
+            font-family: var(--font-title);
+            font-size: 3rem;
+            color: var(--color-teal-dark);
+            text-align: center;
+            margin-bottom: 50px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s ease;
+        }
+
+        .gallery-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.9s ease;
+        }
+
+        .gallery-grid.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(9, 107, 104, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0px solid var(--color-teal-light);
+            box-sizing: border-box;
+            border-radius: 8px;
+            transition: border 0.3s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(9, 107, 104, 0.2);
+        }
+
+        .gallery-item:hover::before {
+            border-width: 4px;
+            box-shadow: 0 0 20px var(--color-teal-light);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.05);
+        }
+
+        /* Fullscreen Gallery */
+        .fullscreen-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(9, 107, 104, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .fullscreen-container.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .fullscreen-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .fullscreen-container.active .fullscreen-image {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .close-fullscreen {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--color-cream);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+
+        .fullscreen-container.active .close-fullscreen {
+            transform: scale(1);
+        }
+
+        .close-fullscreen::before,
+        .close-fullscreen::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            background-color: var(--color-teal-dark);
+        }
+
+        .close-fullscreen::before {
+            transform: rotate(45deg);
+        }
+
+        .close-fullscreen::after {
+            transform: rotate(-45deg);
+        }
+
+        .close-fullscreen:hover {
+            background-color: var(--color-teal-light);
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--color-teal-dark);
+            color: var(--color-cream);
+            padding: 60px 10%;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+        }
+
+        .footer-logo img {
+            height: 60px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+        }
+
+        .footer-heading {
+            font-family: var(--font-title);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--color-teal-light);
+        }
+
+        .footer-nav {
+            list-style: none;
+        }
+
+        .footer-nav li {
+            margin-bottom: 10px;
+        }
+
+        .footer-nav a {
+            color: var(--color-cream);
+            text-decoration: none;
+            font-family: var(--font-alt);
+            transition: color 0.3s ease;
+        }
+
+        .footer-nav a:hover {
+            color: var(--color-teal-light);
+        }
+
+        .footer-social {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 251, 222, 0.1);
+            color: var(--color-cream);
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: var(--color-teal-light);
+            color: var(--color-teal-dark);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 251, 222, 0.1);
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255, 251, 222, 0.7);
+        }
+
+        .footer-bottom a {
+            color: var(--color-teal-light);
+            text-decoration: none;
+        }
+
+        /* Media Queries */
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 4rem;
+            }
+            
+            .video-title {
+                font-size: 3rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .hero-text {
+                font-size: 1rem;
+            }
+            
+            .video-title {
+                font-size: 2.5rem;
+            }
+            
+            .video-description {
+                font-size: 1rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .nav-container {
+                padding: 15px 20px;
+            }
+            
+            .nav-scrolled {
+                padding: 10px 20px;
+            }
+            
+            .nav-link {
+                margin-left: 20px;
+            }
+            
+            .nav-link a {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .video-title {
+                font-size: 2rem;
+            }
+            
+            .gallery-title {
+                font-size: 2.5rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <img src="Logo1.png" alt="Horizon Interactive Logo" class="preloader-logo">
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+        <p class="loading-text">LOADING EXPERIENCE...</p>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="nav-container">
+        <nav class="navbar">
+            <a href="#" class="logo-container">
+                <img src="Logo1.png" alt="Horizon Interactive" class="logo">
+            </a>
+            <ul class="nav-links">
+                <li class="nav-link"><a href="#home">Home</a></li>
+                <li class="nav-link"><a href="#character">Character</a></li>
+                <li class="nav-link"><a href="#gallery">Gallery</a></li>
+                <li class="nav-link"><a href="#about">About</a></li>
+                <li class="nav-link"><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <img src="photos/background1.png" alt="Hero Background" class="hero-background">
+        <div class="hero-content">
+            <h1 class="hero-title">My test website</h1>
+            <p class="hero-text">I will show some of my website building skills here.</p>
+        </div>
+        <div class="scroll-indicator">
+            <span class="scroll-text">Scroll Down</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Video Animation Section -->
+    <section id="character" class="video-container">
+        <div class="sticky-video">
+            <!-- Video frames will be dynamically loaded here -->
+        </div>
+        <div class="video-overlay"></div>
+        <div class="video-text">
+            <h2 class="video-title">Character1</h2>
+            <p class="video-description">He likes to paint, plays cricket, good at technology. He is the no. 2 senior here. He is the angry young man here. But he is also loving and caring.</p>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery-section">
+        <h2 class="gallery-title">Photo Gallery</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item" data-src="photos/photo1.png">
+                <img src="photos/photo1.png" alt="Character Photo 1" class="gallery-image">
+            </div>
+            <div class="gallery-item" data-src="photos/photo2.png">
+                <img src="photos/photo2.png" alt="Character Photo 2" class="gallery-image">
+            </div>
+            <div class="gallery-item" data-src="photos/photo3.png">
+                <img src="photos/photo3.png" alt="Character Photo 3" class="gallery-image">
+            </div>
+            <div class="gallery-item" data-src="photos/photo4.png">
+                <img src="photos/photo4.png" alt="Character Photo 4" class="gallery-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Fullscreen Gallery -->
+    <div class="fullscreen-container">
+        <img src="" alt="Fullscreen Image" class="fullscreen-image">
+        <div class="close-fullscreen"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="Logo1.png" alt="Horizon Interactive">
+                <p>Pushing the boundaries of interactive web experiences.</p>
+            </div>
+            <div class="footer-links">
+                <h3 class="footer-heading">Quick Links</h3>
+                <ul class="footer-nav">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#character">Character</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h3 class="footer-heading">Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Horizon Interactive. All rights reserved. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Preload all images
+        const imageUrls = [
+            'Logo1.png',
+            'photos/background1.png',
+            'photos/photo1.png',
+            'photos/photo2.png',
+            'photos/photo3.png',
+            'photos/photo4.png'
+        ];
+
+        // Add all video frames to the preload list
+        for (let i = 1; i <= 47; i++) {
+            imageUrls.push(`Video1/Frame${i}.jpeg`);
+        }
+
+        const preloader = document.querySelector('.preloader');
+        const progressBar = document.querySelector('.loading-progress');
+        let loadedImages = 0;
+
+        function updateProgress() {
+            const progress = (loadedImages / imageUrls.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            
+            if (loadedImages === imageUrls.length) {
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                        // Trigger animations that should happen after page load
+                        document.querySelector('.hero-content').style.opacity = '1';
+                        document.querySelector('.hero-content').style.transform = 'translateY(0)';
+                    }, 500);
+                }, 1000);
+            }
+        }
+
+        function preloadImages() {
+            imageUrls.forEach(url => {
+                const img = new Image();
+                img.src = url;
+                img.onload = () => {
+                    loadedImages++;
+                    updateProgress();
+                };
+                img.onerror = () => {
+                    loadedImages++;
+                    console.error(`Failed to load image: ${url}`);
+                    updateProgress();
+                };
+            });
+        }
+
+        // Create and append video frames
+        function createVideoFrames() {
+            const stickyVideo = document.querySelector('.sticky-video');
+            
+            for (let i = 1; i <= 47; i++) {
+                const frame = document.createElement('img');
+                frame.src = `Video1/Frame${i}.jpeg`;
+                frame.classList.add('video-frame');
+                frame.dataset.frame = i;
+                
+                // Make the first frame visible initially
+                if (i === 1) {
+                    frame.classList.add('active-frame');
+                }
+                
+                stickyVideo.appendChild(frame);
+            }
+        }
+
+        // Navigation bar effect on scroll
+        function handleNavScroll() {
+            const nav = document.querySelector('.nav-container');
+            if (window.scrollY > 50) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        }
+
+        // Video frame animation on scroll
+        function handleVideoAnimation() {
+            const videoContainer = document.querySelector('.video-container');
+            const frames = document.querySelectorAll('.video-frame');
+            const videoOverlay = document.querySelector('.video-overlay');
+            const videoText = document.querySelector('.video-text');
+            
+            if (!videoContainer) return;
+            
+            const containerTop = videoContainer.offsetTop;
+            const containerHeight = videoContainer.offsetHeight;
+            const windowHeight = window.innerHeight;
+            const scrollPos = window.scrollY;
+            
+            // Calculate progress through the video section (0 to 1)
+            const scrollStart = containerTop - windowHeight / 2;
+            const scrollEnd = containerTop + containerHeight - windowHeight * 1.5;
+            const scrollRange = scrollEnd - scrollStart;
+            const progress = Math.max(0, Math.min(1, (scrollPos - scrollStart) / scrollRange));
+            
+            // Determine which frame to show
+            const totalFrames = frames.length;
+            const frameIndex = Math.min(totalFrames - 1, Math.floor(progress * totalFrames));
+            
+            // Update visible frame
+            frames.forEach(frame => frame.classList.remove('active-frame'));
+            if (frames[frameIndex]) {
+                frames[frameIndex].classList.add('active-frame');
+            }
+            
+            // Show overlay when near the end
+            if (progress > 0.7) {
+                const overlayOpacity = (progress - 0.7) / 0.3;
+                videoOverlay.style.opacity = Math.min(1, overlayOpacity);
+            } else {
+                videoOverlay.style.opacity = 0;
+            }
+            
+            // Show text when near the end
+            if (progress > 0.85) {
+                const textProgress = (progress - 0.85) / 0.15;
+                videoText.style.transform = `translateY(${100 - (textProgress * 100)}px)`;
+                videoText.style.opacity = textProgress;
+            } else {
+                videoText.style.transform = 'translateY(100px)';
+                videoText.style.opacity = 0;
+            }
+        }
+
+        // Gallery section animations
+        function handleGalleryAnimation() {
+            const galleryTitle = document.querySelector('.gallery-title');
+            const galleryGrid = document.querySelector('.gallery-grid');
+            const windowHeight = window.innerHeight;
+            
+            if (galleryTitle) {
+                const titlePos = galleryTitle.getBoundingClientRect().top;
+                if (titlePos < windowHeight * 0.8) {
+                    galleryTitle.classList.add('visible');
+                }
+            }
+            
+            if (galleryGrid) {
+                const gridPos = galleryGrid.getBoundingClientRect().top;
+                if (gridPos < windowHeight * 0.8) {
+                    galleryGrid.classList.add('visible');
+                }
+            }
+        }
+
+        // Fullscreen gallery functionality
+        function setupGallery() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const fullscreenContainer = document.querySelector('.fullscreen-container');
+            const fullscreenImage = document.querySelector('.fullscreen-image');
+            const closeButton = document.querySelector('.close-fullscreen');
+            
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const imageSrc = item.getAttribute('data-src');
+                    fullscreenImage.src = imageSrc;
+                    fullscreenContainer.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            closeButton.addEventListener('click', closeFullscreen);
+            fullscreenContainer.addEventListener('click', (e) => {
+                if (e.target === fullscreenContainer) {
+                    closeFullscreen();
+                }
+            });
+            
+            function closeFullscreen() {
+                fullscreenContainer.classList.remove('active');
+                setTimeout(() => {
+                    fullscreenImage.src = '';
+                }, 500);
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Init functions on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            preloadImages();
+            createVideoFrames();
+            setupGallery();
+            
+            // Trigger initial check for animations
+            handleNavScroll();
+            handleVideoAnimation();
+            handleGalleryAnimation();
+            
+            // Setup scroll event handlers
+            window.addEventListener('scroll', () => {
+                handleNavScroll();
+                handleVideoAnimation();
+                handleGalleryAnimation();
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                handleVideoAnimation();
+                handleGalleryAnimation();
+            });
+        });
+    </script>
+</body>
+</html>
