@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parallax Persona</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            color: #ffffff;
+            overflow-x: hidden;
+            background-color: #000;
+        }
+
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .preloader-content {
+            text-align: center;
+        }
+
+        .preloader-text {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff4d4d, #f9cb28);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 5px;
+            background-color: #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff4d4d, #f9cb28);
+            transition: width 0.3s ease-out;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-scrolled {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            height: 60px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff4d4d, #f9cb28);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #f9cb28;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .hero-content {
+            padding-left: 10%;
+            width: 50%;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1.5s forwards 0.5s;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff4d4d, #f9cb28);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-text {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            animation: fadeIn 1s forwards 2s;
+        }
+
+        .scroll-text {
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .scroll-arrow {
+            width: 20px;
+            height: 20px;
+            border-right: 2px solid white;
+            border-bottom: 2px solid white;
+            transform: rotate(45deg);
+            animation: scrollDown 2s infinite;
+        }
+
+        /* Video Frame Section */
+        .video-section {
+            position: relative;
+            height: 300vh;
+            overflow: hidden;
+        }
+
+        .video-container {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .video-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.1s ease;
+        }
+
+        .character-content {
+            position: absolute;
+            bottom: 10%;
+            left: 10%;
+            width: 50%;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .character-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff4d4d, #f9cb28);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .character-description {
+            font-size: 1.3rem;
+            line-height: 1.6;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            padding: 100px 5%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), #000);
+        }
+
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            aspect-ratio: 1/1.5;
+        }
+
+        .gallery-item:nth-child(4) {
+            aspect-ratio: 1/1;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 20px rgba(249, 203, 40, 0.5);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.05);
+        }
+
+        /* Fullscreen Image Viewer */
+        .fullscreen-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .fullscreen-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .close-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .close-button::before,
+        .close-button::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            background-color: white;
+        }
+
+        .close-button::before {
+            transform: rotate(45deg);
+        }
+
+        .close-button::after {
+            transform: rotate(-45deg);
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px;
+            background-color: #111;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .footer-link {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #f9cb28;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-icon {
+            color: #ccc;
+            font-size: 1.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: #f9cb28;
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scrollDown {
+            0% {
+                opacity: 0;
+                transform: rotate(45deg) translate(-5px, -5px);
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+        }
+
+        /* Media Queries */
+        @media (max-width: 1024px) {
+            .hero-content {
+                width: 70%;
+            }
+            .character-content {
+                width: 70%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            .hero-text {
+                font-size: 1.2rem;
+            }
+            .character-title {
+                font-size: 2.5rem;
+            }
+            .character-description {
+                font-size: 1.1rem;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content {
+                width: 90%;
+                padding-left: 5%;
+            }
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            .character-content {
+                width: 90%;
+                left: 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-content">
+            <div class="preloader-text">Loading Parallax Persona</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="mainNav">
+        <a href="#" class="logo-link">
+            <img src="Logo1.png" alt="Parallax Persona Logo" class="logo">
+        </a>
+        <div class="nav-links">
+            <a href="#" class="nav-link">Home</a>
+            <a href="#character" class="nav-link">Character</a>
+            <a href="#gallery" class="nav-link">Gallery</a>
+            <a href="#footer" class="nav-link">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <img src="photos/background1.png" alt="Hero Background" class="hero-background">
+        <div class="hero-content">
+            <h1 class="hero-title">My test website</h1>
+            <p class="hero-text">I will show some of my website building skills here.</p>
+        </div>
+        <div class="scroll-indicator">
+            <span class="scroll-text">SCROLL DOWN</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Video Frame Section -->
+    <section class="video-section" id="character">
+        <div class="video-container">
+            <!-- Video frames will be inserted here by JavaScript -->
+        </div>
+        <div class="character-content">
+            <h2 class="character-title">Character1</h2>
+            <p class="character-description">He likes to paint, plays cricket, good at technology. He is the no. 2 senior here. He is the angry young man here. But he is also loving and caring.</p>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section" id="gallery">
+        <div class="gallery-container">
+            <div class="gallery-item">
+                <img src="photos/photo1.png" alt="Character Photo 1" class="gallery-image">
+            </div>
+            <div class="gallery-item">
+                <img src="photos/photo2.png" alt="Character Photo 2" class="gallery-image">
+            </div>
+            <div class="gallery-item">
+                <img src="photos/photo3.png" alt="Character Photo 3" class="gallery-image">
+            </div>
+            <div class="gallery-item">
+                <img src="photos/photo4.png" alt="Character Photo 4" class="gallery-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Fullscreen Image Viewer -->
+    <div class="fullscreen-viewer">
+        <img src="" alt="Fullscreen Image" class="fullscreen-image">
+        <div class="close-button"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+            </div>
+            <div class="social-icons">
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+            </div>
+            <p class="copyright">© 2025 Parallax Persona. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Preloader functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.querySelector('.preloader');
+            const progress = document.querySelector('.loading-progress');
+            
+            // Array of all image paths for preloading
+            const imagePaths = [
+                'Logo1.png',
+                'photos/background1.png',
+                'photos/photo1.png',
+                'photos/photo2.png',
+                'photos/photo3.png',
+                'photos/photo4.png'
+            ];
+            
+            // Add video frames
+            for (let i = 1; i <= 47; i++) {
+                imagePaths.push(`Video1/Frame${i}.jpeg`);
+            }
+            
+            let loadedCount = 0;
+            const totalImages = imagePaths.length;
+            
+            // Preload images
+            imagePaths.forEach(path => {
+                const img = new Image();
+                img.src = path;
+                img.onload = () => {
+                    loadedCount++;
+                    const progressPercent = (loadedCount / totalImages) * 100;
+                    progress.style.width = `${progressPercent}%`;
+                    
+                    if (loadedCount === totalImages) {
+                        // All images loaded, hide preloader
+                        setTimeout(() => {
+                            preloader.style.opacity = '0';
+                            setTimeout(() => {
+                                preloader.style.display = 'none';
+                                // Start animations after preloader is hidden
+                                initScrollAnimations();
+                            }, 500);
+                        }, 500);
+                    }
+                };
+                
+                img.onerror = () => {
+                    console.error(`Failed to load image: ${path}`);
+                    loadedCount++;
+                    const progressPercent = (loadedCount / totalImages) * 100;
+                    progress.style.width = `${progressPercent}%`;
+                };
+            });
+            
+            // Fallback in case some images fail to load
+            setTimeout(() => {
+                if (preloader.style.display !== 'none') {
+                    preloader.style.opacity = '0';
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                        initScrollAnimations();
+                    }, 500);
+                }
+            }, 8000);
+        });
+        
+        // Initialize all scroll-based animations
+        function initScrollAnimations() {
+            // Create and append video frames
+            const videoContainer = document.querySelector('.video-container');
+            const totalFrames = 47;
+            
+            for (let i = 1; i <= totalFrames; i++) {
+                const frame = document.createElement('img');
+                frame.src = `Video1/Frame${i}.jpeg`;
+                frame.classList.add('video-frame');
+                
+                // Show first frame initially
+                if (i === 1) {
+                    frame.style.opacity = '1';
+                }
+                
+                videoContainer.appendChild(frame);
+            }
+            
+            // Navigation bar scrolling effect
+            const nav = document.getElementById('mainNav');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    nav.classList.add('nav-scrolled');
+                } else {
+                    nav.classList.remove('nav-scrolled');
+                }
+                
+                updateVideoFrames();
+                updateCharacterContent();
+                updateGallery();
+            });
+            
+            // Video frames scroll animation
+            function updateVideoFrames() {
+                const videoSection = document.querySelector('.video-section');
+                const frames = document.querySelectorAll('.video-frame');
+                
+                // Calculate the scroll position relative to video section
+                const scrollStart = videoSection.offsetTop;
+                const scrollEnd = scrollStart + videoSection.offsetHeight;
+                const scrollY = window.scrollY;
+                
+                // Only update frames if we're within the video section
+                if (scrollY >= scrollStart && scrollY <= scrollEnd) {
+                    const scrollProgress = (scrollY - scrollStart) / (scrollEnd - scrollStart);
+                    const frameIndex = Math.min(
+                        Math.floor(scrollProgress * totalFrames),
+                        totalFrames - 1
+                    );
+                    
+                    // Hide all frames and show only the current one
+                    frames.forEach((frame, index) => {
+                        frame.style.opacity = index === frameIndex ? '1' : '0';
+                    });
+                    
+                    // Add darkening effect for the last frames
+                    if (frameIndex > totalFrames * 0.8) {
+                        const darkProgress = (frameIndex - totalFrames * 0.8) / (totalFrames * 0.2);
+                        videoContainer.style.boxShadow = `inset 0 0 0 1000px rgba(0, 0, 0, ${darkProgress * 0.6})`;
+                    } else {
+                        videoContainer.style.boxShadow = 'none';
+                    }
+                }
+            }
+            
+            // Character content fade in
+            function updateCharacterContent() {
+                const characterContent = document.querySelector('.character-content');
+                const videoSection = document.querySelector('.video-section');
+                const scrollY = window.scrollY;
+                
+                const showPoint = videoSection.offsetTop + videoSection.offsetHeight * 0.7;
+                
+                if (scrollY >= showPoint) {
+                    characterContent.style.opacity = '1';
+                    characterContent.style.transform = 'translateY(0)';
+                } else {
+                    characterContent.style.opacity = '0';
+                    characterContent.style.transform = 'translateY(50px)';
+                }
+            }
+            
+            // Gallery fade in
+            function updateGallery() {
+                const galleryContainer = document.querySelector('.gallery-container');
+                const gallerySection = document.querySelector('.gallery-section');
+                const scrollY = window.scrollY;
+                
+                const showPoint = gallerySection.offsetTop - window.innerHeight * 0.7;
+                
+                if (scrollY >= showPoint) {
+                    galleryContainer.style.opacity = '1';
+                    galleryContainer.style.transform = 'translateY(0)';
+                    galleryContainer.style.transition = 'opacity 1s ease, transform 1s ease';
+                }
+            }
+            
+            // Fullscreen image viewer
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const fullscreenViewer = document.querySelector('.fullscreen-viewer');
+            const fullscreenImage = document.querySelector('.fullscreen-image');
+            const closeButton = document.querySelector('.close-button');
+            
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const imgSrc = item.querySelector('.gallery-image').src;
+                    fullscreenImage.src = imgSrc;
+                    fullscreenViewer.style.opacity = '1';
+                    fullscreenViewer.style.pointerEvents = 'all';
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            closeButton.addEventListener('click', closeFullscreen);
+            fullscreenViewer.addEventListener('click', function(e) {
+                if (e.target === fullscreenViewer) {
+                    closeFullscreen();
+                }
+            });
+            
+            function closeFullscreen() {
+                fullscreenViewer.style.opacity = '0';
+                fullscreenViewer.style.pointerEvents = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
